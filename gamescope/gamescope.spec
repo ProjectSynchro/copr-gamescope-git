@@ -1,11 +1,12 @@
-%global commit 14a1db3a57612e5cfbba6d4c19688eafdc6c4043
+%global commit 09f632b13f85dad92275c43e721bb62de68fbd4a
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
+%global git_date 20240319
 %global libliftoff_minver 0.4.1
 %global reshade_commit 4245743a8c41abbe3dc73980c1810fe449359bf1
 %global reshade_shortcommit %(c=%{reshade_commit}; echo ${c:0:7})
 
 Name:           gamescope
-Version:        3.14.2.1
+Version:        3.14.2^%{git_date}git%{shortcommit}
 Release:        %autorelease
 Summary:        Micro-compositor for video games on Wayland
 
@@ -50,6 +51,7 @@ BuildRequires:  (pkgconfig(wlroots) >= 0.17.0 with pkgconfig(wlroots) < 0.18)
 BuildRequires:  (pkgconfig(libliftoff) >= 0.4.1 with pkgconfig(libliftoff) < 0.5)
 BuildRequires:  pkgconfig(libcap)
 BuildRequires:  pkgconfig(hwdata)
+BuildRequires:  pkgconfig(libdecor-0)
 BuildRequires:  spirv-headers-devel
 # Enforce the the minimum EVR to contain fixes for all of:
 # CVE-2021-28021 CVE-2021-42715 CVE-2021-42716 CVE-2022-28041 CVE-2023-43898
