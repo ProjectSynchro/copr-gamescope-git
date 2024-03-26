@@ -1,6 +1,6 @@
-%global commit a559b04c3b44f9a02d4d71dc61afb6b023e62b38
+%global commit e0098f56651909d98d5ba3137369f1e0b7525b4b
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
-%global git_date 20240319
+%global git_date 20240325
 %global libliftoff_minver 0.4.1
 %global reshade_commit 4245743a8c41abbe3dc73980c1810fe449359bf1
 %global reshade_shortcommit %(c=%{reshade_commit}; echo ${c:0:7})
