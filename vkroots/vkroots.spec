@@ -47,7 +47,3 @@ takes all the complexity/hastle away from you. It's so simple.
 %doc README.md
 %{_includedir}/%{name}.h
 %{_libdir}/pkgconfig/%{name}.pc
-
-
-%changelog
-%autochangelog
