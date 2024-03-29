@@ -29,12 +29,6 @@ License:        MIT
 URL:            https://gitlab.freedesktop.org/wlroots/wlroots
 Source:         %{url}/-/archive/%{commit}/%{name}-%{commit}.tar.gz
 
-# Upstream patches
-
-# Fedora patches
-# Following patch is required for phoc.
-Patch:          Revert-layer-shell-error-on-0-dimension-without-anch.patch
-
 BuildRequires:  gcc
 BuildRequires:  glslang
 BuildRequires:  gnupg2
