@@ -91,7 +91,6 @@ MESON_OPTIONS=(
 
 %install
 %{meson_install}
-install -pm0644 -D '%{SOURCE3}' '%{buildroot}/%{_pkgdocdir}/examples/meson.build'
 
 %check
 %{meson_test}
@@ -101,7 +100,7 @@ install -pm0644 -D '%{SOURCE3}' '%{buildroot}/%{_pkgdocdir}/examples/meson.build
 %doc README.md
 %{_libdir}/lib%{name}.so.%{abi_ver}{,.*}
 
-%files  devel
+%files devel
 %doc %{_pkgdocdir}/examples
 %{_includedir}/wlr
 %{_libdir}/lib%{name}.so
