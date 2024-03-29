@@ -101,7 +101,6 @@ MESON_OPTIONS=(
 %{_libdir}/lib%{name}.so.%{abi_ver}{,.*}
 
 %files devel
-%doc %{_pkgdocdir}/examples
 %{_includedir}/wlr
 %{_libdir}/lib%{name}.so
 %{_libdir}/pkgconfig/%{name}.pc
