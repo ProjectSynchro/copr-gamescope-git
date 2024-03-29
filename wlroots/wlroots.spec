@@ -29,11 +29,6 @@ License:        MIT
 URL:            https://gitlab.freedesktop.org/wlroots/wlroots
 Source:         %{url}/-/archive/%{commit}/%{name}-%{commit}.tar.gz
 
-# this file is a modification of examples/meson.build so as to:
-# - make it self-contained
-# - only has targets for examples known to compile well (cf. "examples) global)
-Source3:        examples.meson.build
-
 # Upstream patches
 
 # Fedora patches
