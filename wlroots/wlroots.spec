@@ -3,7 +3,7 @@
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 %global git_date 20240328
 # Version of the .so library
-%global abi_ver 12
+%global abi_ver 13
 
 Name:           wlroots
 Version:        0.17.2^%{git_date}git%{shortcommit}
