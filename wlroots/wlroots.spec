@@ -1,7 +1,7 @@
 %global debug_package %{nil}
 %global commit a5c9826e6d7d8b504b07d1c02425e6f62b020791
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
-%global git_date 20240328
+%global git_date 20240320
 # Version of the .so library
 %global abi_ver 13
 
