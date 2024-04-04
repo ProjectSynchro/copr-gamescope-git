@@ -1,6 +1,6 @@
-%global commit 033872dcb694e8be6c01826dc37764dd6b95a26c
+%global commit 26db73933aca7bec9fdc0342b3420c7fb0ed7b04
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
-%global git_date 20240327
+%global git_date 20240403
 %global libliftoff_minver 0.4.1
 %global reshade_commit 4245743a8c41abbe3dc73980c1810fe449359bf1
 %global reshade_shortcommit %(c=%{reshade_commit}; echo ${c:0:7})
@@ -47,7 +47,7 @@ BuildRequires:  pkgconfig(xkbcommon)
 BuildRequires:  pkgconfig(sdl2)
 BuildRequires:  pkgconfig(libpipewire-0.3)
 BuildRequires:  pkgconfig(libavif)
-BuildRequires:  (pkgconfig(wlroots) >= 0.17.0 with pkgconfig(wlroots) < 0.18)
+BuildRequires:  (pkgconfig(wlroots) >= 0.18.0^20240320gita5c9826-1 with pkgconfig(wlroots) < 0.19)
 BuildRequires:  (pkgconfig(libliftoff) >= 0.4.1 with pkgconfig(libliftoff) < 0.5)
 BuildRequires:  pkgconfig(libcap)
 BuildRequires:  pkgconfig(hwdata)
