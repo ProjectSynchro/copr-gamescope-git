@@ -1,12 +1,12 @@
-%global commit d7aace10c4901a0f0d989996e8fb8f0753eab185
+%global commit 39f2779d39720792049f1589d0d6cf31876137e9
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
-%global git_date 20240404
+%global git_date 20240410
 %global libliftoff_minver 0.4.1
 %global reshade_commit 4245743a8c41abbe3dc73980c1810fe449359bf1
 %global reshade_shortcommit %(c=%{reshade_commit}; echo ${c:0:7})
 
 Name:           gamescope
-Version:        3.14.2^%{git_date}git%{shortcommit}
+Version:        3.14.3^%{git_date}git%{shortcommit}
 Release:        %autorelease
 Summary:        Micro-compositor for video games on Wayland
 
