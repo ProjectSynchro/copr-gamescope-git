@@ -4,6 +4,10 @@
 %global libliftoff_minver 0.4.1
 %global reshade_commit 4245743a8c41abbe3dc73980c1810fe449359bf1
 %global reshade_shortcommit %(c=%{reshade_commit}; echo ${c:0:7})
+%global vkroots_commit 5c217cd43ca1ceecaa6acfc93a81cdc615929155
+%global vkroots_shortcommit %(c=%{vkroots_commit}; echo ${c:0:7})
+%global wlroots_commit a5c9826e6d7d8b504b07d1c02425e6f62b020791
+%global wlroots_shortcommit %(c=%{wlroots_commit}; echo ${c:0:7})
 
 Name:           gamescope
 Version:        3.14.3^%{git_date}git%{shortcommit}
@@ -16,6 +20,8 @@ Source0:        %{url}/archive/%{commit}.tar.gz
 # Create stb.pc to satisfy dependency('stb')
 Source1:        stb.pc
 Source2:        https://github.com/Joshua-Ashton/reshade/archive/%{reshade_commit}/reshade-%{reshade_shortcommit}.tar.gz
+Source3:        https://github.com/Joshua-Ashton/vkroots/archive/%{vkroots_commit}/vkroots-%{vkroots_shortcommit}.tar.gz
+Source4:        https://github.com/Joshua-Ashton/wlroots/archive/%{wlroots_commit}/wlroots-%{wlroots_shortcommit}.tar.gz
 
 Patch01:        0001-cstdint.patch
 
@@ -47,7 +53,7 @@ BuildRequires:  pkgconfig(xkbcommon)
 BuildRequires:  pkgconfig(sdl2)
 BuildRequires:  pkgconfig(libpipewire-0.3)
 BuildRequires:  pkgconfig(libavif)
-BuildRequires:  (pkgconfig(wlroots) >= 0.18.0 with pkgconfig(wlroots) < 0.19)
+#BuildRequires:  (pkgconfig(wlroots) >= 0.18.0 with pkgconfig(wlroots) < 0.19)
 BuildRequires:  (pkgconfig(libliftoff) >= 0.4.1 with pkgconfig(libliftoff) < 0.5)
 BuildRequires:  pkgconfig(libcap)
 BuildRequires:  pkgconfig(hwdata)
@@ -64,8 +70,27 @@ BuildRequires:  stb_image_resize-devel
 BuildRequires:  stb_image_resize-static
 BuildRequires:  stb_image_write-devel
 BuildRequires:  stb_image_write-static
-BuildRequires:  vkroots-devel
+#BuildRequires:  vkroots-devel
 BuildRequires:  /usr/bin/glslangValidator
+
+#vkroots deps
+BuildRequires:  vulkan-headers
+
+#wlroots deps
+BuildRequires:  pkgconfig(egl)
+BuildRequires:  pkgconfig(gbm) >= 17.1.0
+BuildRequires:  pkgconfig(glesv2)
+BuildRequires:  pkgconfig(libinput) >= 1.21.0
+BuildRequires:  pkgconfig(libseat)
+BuildRequires:  pkgconfig(libudev)
+BuildRequires:  pkgconfig(pixman-1) >= 0.42.0
+BuildRequires:  pkgconfig(wayland-client)
+BuildRequires:  pkgconfig(x11-xcb)
+BuildRequires:  pkgconfig(xcb)
+BuildRequires:  pkgconfig(xcb-errors)
+BuildRequires:  pkgconfig(xcb-icccm)
+BuildRequires:  pkgconfig(xcb-renderutil)
+BuildRequires:  pkgconfig(xwayland)
 
 # libliftoff hasn't bumped soname, but API/ABI has changed for 0.2.0 release
 Requires:       libliftoff%{?_isa} >= %{libliftoff_minver}
@@ -77,7 +102,7 @@ Recommends:     mesa-vulkan-drivers
 %{name} is the micro-compositor optimized for running video games on Wayland.
 
 %prep
-%autosetup -p1 -a2 -N -n %{name}-%{commit}
+%setup -a2 -a3 -a4 -q -n %{name}-%{commit}
 # Install stub pkgconfig file
 mkdir -p pkgconfig
 cp %{SOURCE1} pkgconfig/stb.pc
@@ -87,6 +112,10 @@ sed -i 's^../thirdparty/SPIRV-Headers/include/spirv/^/usr/include/spirv/^' src/m
 
 # Push in reshade from sources instead of submodule
 rm -rf src/reshade && mv reshade-%{reshade_commit} src/reshade
+
+# Use vkroots/wlroots from sources instead of submodule
+rm -rf subprojects/vkroots && mv vkroots-%{vkroots_commit} subprojects/vkroots
+rm -rf subprojects/wlroots && mv wlroots-%{wlroots_commit} subprojects/wlroots
 
 %autopatch -p1
 
@@ -104,6 +133,13 @@ export PKG_CONFIG_PATH=pkgconfig
 %{_bindir}/gamescope
 %{_libdir}/libVkLayer_FROG_gamescope_wsi_*.so
 %{_datadir}/vulkan/implicit_layer.d/VkLayer_FROG_gamescope_wsi.*.json
+
+%ghost
+/usr/include/vkroots.h
+/usr/include/wlr/*
+/usr/lib64/libwlroots.a
+/usr/lib64/pkgconfig/vkroots.pc
+/usr/lib64/pkgconfig/wlroots.pc
 
 %changelog
 %autochangelog
