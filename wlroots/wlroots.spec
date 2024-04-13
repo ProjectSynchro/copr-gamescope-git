@@ -26,8 +26,13 @@ Summary:        A modular Wayland compositor library
 # the main license of the binaries linking with them by
 # the underlying licenses.
 License:        MIT
-URL:            https://gitlab.freedesktop.org/wlroots/wlroots
-Source:         %{url}/-/archive/%{commit}/%{name}-%{commit}.tar.gz
+URL:            https://github.com/Joshua-Ashton/wlroots
+Source0:        %{url}/archive/%{commit}/%{name}-%{shortcommit}.tar.gz
+	
+# this file is a modification of examples/meson.build so as to:
+# - make it self-contained
+# - only has targets for examples known to compile well (cf. "examples) global)
+Source1:        examples.meson.build
 
 BuildRequires:  gcc
 BuildRequires:  glslang
@@ -91,6 +96,7 @@ MESON_OPTIONS=(
 
 %install
 %{meson_install}
+install -pm0644 -D '%{SOURCE1}' '%{buildroot}/%{_pkgdocdir}/examples/meson.build'
 
 %check
 %{meson_test}
@@ -101,6 +107,10 @@ MESON_OPTIONS=(
 %{_libdir}/lib%{name}.so.%{abi_ver}{,.*}
 
 %files devel
+%doc %{_pkgdocdir}/examples
 %{_includedir}/wlr
 %{_libdir}/lib%{name}.so
 %{_libdir}/pkgconfig/%{name}.pc
+
+%changelog
+%autochangelog

@@ -104,3 +104,6 @@ export PKG_CONFIG_PATH=pkgconfig
 %{_bindir}/gamescope
 %{_libdir}/libVkLayer_FROG_gamescope_wsi_*.so
 %{_datadir}/vulkan/implicit_layer.d/VkLayer_FROG_gamescope_wsi.*.json
+
+%changelog
+%autochangelog
