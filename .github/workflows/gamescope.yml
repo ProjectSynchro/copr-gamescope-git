@@ -18,18 +18,18 @@ jobs:
         id: get-commit
         run: |
           latest_commit=$(curl -s https://api.github.com/repos/ValveSoftware/gamescope/commits/master | jq -r '.sha')
-          echo "Latest Commit: $latest_commit"
+          echo "latest-commit=$latest_commit" >> $GITHUB_OUTPUT
 
       - name: Get Current Commit
         id: get-current-commit
         run: |
           current_commit=$(grep -oP '(?<=^%global commit ).*' gamescope/gamescope.spec)
-          echo "Current Spec: $current_commit"
+          echo "current-commit=$current_commit" >> $GITHUB_OUTPUT
 
       - name: Compare Commits
         id: compare-commits
         run: |
-          if [ "${{ steps.get-commit.outputs.latest_commit }}" != "${{ steps.get-current-commit.outputs.current-commit }}" ]; then
+          if [ "${{ steps.get-commit.outputs.latest-commit }}" != "${{ steps.get-current-commit.outputs.current-commit }}" ]; then
             echo "There is a new commit avaliable."
           else
             echo "There is no new commit avaliable."
