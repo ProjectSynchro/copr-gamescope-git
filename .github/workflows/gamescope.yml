@@ -2,7 +2,7 @@ name: Update Gamescope Commit
 
 on:
   schedule:
-    - cron: "*/5 * * * *"
+    - cron: "0 * * * *"
 
 jobs:
   update-gamescope:
@@ -37,7 +37,6 @@ jobs:
         if: steps.compare-commits.outcome == 'success'
         run: |
           sed -i "s/%global commit .*/%global commit ${{ steps.get-commit.outputs.latest-commit }}/g" gamescope/gamescope.spec
-          cat gamescope/gamescope.spec
           
       - name: Commit and Push Changes
         if: steps.compare-commits.outcome == 'success'
