@@ -37,12 +37,12 @@ jobs:
           fi
 
       - name: Update Spec File
-        if: steps.compare-commits.outputs.result == 'success'
+        if: steps.compare-commits.outcome == 'success'
         run: |
           sed -i "s/%global commit .*/%global commit ${{ steps.get-commit.outputs.latest_commit }}/g" gamescope/gamescope.spec
 
       - name: Commit and Push Changes
-        if: steps.compare-commits.outputs.result == 'success'
+        if: steps.compare-commits.outcome == 'success'
         run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
