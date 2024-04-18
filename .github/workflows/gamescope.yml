@@ -1,4 +1,4 @@
-name: Update Gamescope Commit
+name: Update Gamescope
 
 on:
   workflow_dispatch:
