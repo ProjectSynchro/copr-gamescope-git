@@ -40,6 +40,8 @@ jobs:
         if: steps.compare-commits.outcome == 'success'
         run: |
           sed -i "s/%global commit .*/%global commit ${{ steps.get-commit.outputs.latest_commit }}/g" gamescope/gamescope.spec
+          ls -a
+          cat gamescope/gamescope.spec
 
       - name: Commit and Push Changes
         if: steps.compare-commits.outcome == 'success'
