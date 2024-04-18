@@ -3,7 +3,10 @@ name: Update Gamescope Commit
 on:
   schedule:
     - cron: "*/5 * * * *"
-
+  workflow_dispatch:
+    branches:
+      - master
+      
 jobs:
   update-gamescope:
     runs-on: ubuntu-latest
