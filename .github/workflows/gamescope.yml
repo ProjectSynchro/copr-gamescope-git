@@ -23,6 +23,7 @@ jobs:
       - name: Get Current Commit
         id: get-current-commit
         run: |
+          ls -a
           current_commit=$(grep -oP '(?<=^%global commit ).*' gamescope.spec)
           echo "current-commit=$current_commit" >> $GITHUB_OUTPUT
 
