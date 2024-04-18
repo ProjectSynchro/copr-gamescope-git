@@ -23,7 +23,7 @@ jobs:
       - name: Get Current Commit
         id: get-current-commit
         run: |
-          current_commit=$(grep -oP '(?<=^%global commit ).*' gamescope/gamescope.spec)
+          current_commit=$(grep -oP '(?<=^%global commit ).*' gamescope.spec)
           echo "current-commit=$current_commit" >> $GITHUB_OUTPUT
 
       - name: Compare Commits
