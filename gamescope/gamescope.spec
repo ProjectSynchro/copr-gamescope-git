@@ -1,4 +1,4 @@
-%global commit 
+%global commit f8c873e35278e68b16080c6ab060be6f5fbd91a7
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 %global git_date 20240412
 %global libliftoff_minver 0.4.1
