@@ -1,6 +1,7 @@
 name: Update Gamescope Commit
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: "0 * * * *"
 
@@ -15,7 +16,9 @@ jobs:
         id: get-commit
         run: |
           latest_commit=$(curl -s https://api.github.com/repos/ValveSoftware/gamescope/commits/master | jq -r '.sha')
+          git_date=$(curl -s https://api.github.com/repos/ValveSoftware/gamescope/commits/master | jq -r '.commit.author.date' | cut -d "T" -f1 | sed 's/-//g')
           echo "latest-commit=$latest_commit" >> $GITHUB_OUTPUT
+          echo "git-date=$git_date" >> $GITHUB_OUTPUT
 
       - name: Get Current Commit
         id: get-current-commit
@@ -37,6 +40,7 @@ jobs:
         if: steps.compare-commits.outcome == 'success'
         run: |
           sed -i "s/%global commit .*/%global commit ${{ steps.get-commit.outputs.latest-commit }}/g" gamescope/gamescope.spec
+          sed -i "s/%global git_date .*/%global git_date ${{ steps.get-commit.outputs.git-date }}/g" gamescope/gamescope.spec
           
       - name: Commit and Push Changes
         if: steps.compare-commits.outcome == 'success'
