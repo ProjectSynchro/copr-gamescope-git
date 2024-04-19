@@ -36,13 +36,13 @@ jobs:
           fi
 
       - name: Update Spec File
-        if: steps.compare-commits.outputs.new-commit == 'true'
+        if: ${{ contains(steps.compare-commits.outputs.new-commit, 'true') }}
         run: |
           sed -i "s/%global commit .*/%global commit ${{ steps.get-commit.outputs.latest-commit }}/g" gamescope.spec
           sed -i "s/%global git_date .*/%global git_date ${{ steps.get-commit.outputs.git-date }}/g" gamescope.spec
           
       - name: Commit and Push Changes
-        if: steps.compare-commits.outputs.new-commit == 'true'
+        if: ${{ contains(steps.compare-commits.outputs.new-commit, 'true') }}
         run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
