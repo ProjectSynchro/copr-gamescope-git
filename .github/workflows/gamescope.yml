@@ -42,7 +42,7 @@ jobs:
         run: |
           sed -i "s/%global commit .*/%global commit ${{ steps.get-commit.outputs.latest-commit }}/g" gamescope.spec
           sed -i "s/%global git_date .*/%global git_date ${{ steps.get-commit.outputs.git-date }}/g" gamescope.spec
-          sed -i "s/%global latest_tag .*/%global latest_tag ${{ steps.get-commit.outputs.latest-tag }}/g" gamescope.spec
+          sed -i "s/%global tag .*/%global tag ${{ steps.get-commit.outputs.latest-tag }}/g" gamescope.spec
           
       - name: Commit and Push Changes
         if: ${{ contains(steps.compare-commits.outputs.new-commit, 'true') }}
