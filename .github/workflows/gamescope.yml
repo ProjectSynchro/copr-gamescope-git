@@ -17,8 +17,10 @@ jobs:
         run: |
           latest_commit=$(curl -s https://api.github.com/repos/ValveSoftware/gamescope/commits/master | jq -r '.sha')
           git_date=$(curl -s https://api.github.com/repos/ValveSoftware/gamescope/commits/master | jq -r '.commit.author.date' | cut -d "T" -f1 | sed 's/-//g')
+          latest_tag=$(curl -s https://api.github.com/repos/ValveSoftware/gamescope/tags | jq -r '.[0].name')
           echo "latest-commit=$latest_commit" >> $GITHUB_OUTPUT
           echo "git-date=$git_date" >> $GITHUB_OUTPUT
+          echo "latest-tag=$latest_tag" >> $GITHUB_OUTPUT
 
       - name: Get Current Commit
         id: get-current-commit
@@ -40,6 +42,7 @@ jobs:
         run: |
           sed -i "s/%global commit .*/%global commit ${{ steps.get-commit.outputs.latest-commit }}/g" gamescope.spec
           sed -i "s/%global git_date .*/%global git_date ${{ steps.get-commit.outputs.git-date }}/g" gamescope.spec
+          sed -i "s/%global latest_tag .*/%global latest_tag ${{ steps.get-commit.outputs.latest-tag }}/g" gamescope.spec
           
       - name: Commit and Push Changes
         if: ${{ contains(steps.compare-commits.outputs.new-commit, 'true') }}
