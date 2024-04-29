@@ -1,6 +1,6 @@
-%global commit b2b4ca8dfd667bdc0ec56c6ba7b8097649565860
+%global commit a1578b6fc0a653632987291e83ea847d098221ef
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
-%global git_date 20240415
+%global git_date 2024-04-28T22-08-04Z
 %global tag 3.14.7
 %global libliftoff_minver 0.4.1
 %global reshade_commit 4245743a8c41abbe3dc73980c1810fe449359bf1
