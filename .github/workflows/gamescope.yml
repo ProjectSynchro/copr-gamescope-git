@@ -16,7 +16,7 @@ jobs:
         id: get-commit
         run: |
           latest_commit=$(curl -s https://api.github.com/repos/ValveSoftware/gamescope/commits/master | jq -r '.sha')
-          git_date=$(curl -s https://api.github.com/repos/ValveSoftware/gamescope/commits/master | jq -r '.commit.author.date' | cut -d "T" -f1 | sed 's/-//g')
+          git_date=$(curl -s https://api.github.com/repos/ValveSoftware/gamescope/commits/master | jq -r '.commit.committer.date' | sed 's/:/-/g')
           latest_tag=$(curl -s https://api.github.com/repos/ValveSoftware/gamescope/tags | jq -r '.[0].name')
           echo "latest-commit=$latest_commit" >> $GITHUB_OUTPUT
           echo "git-date=$git_date" >> $GITHUB_OUTPUT
