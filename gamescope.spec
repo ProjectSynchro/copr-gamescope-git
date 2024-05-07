@@ -132,7 +132,7 @@ export PKG_CONFIG_PATH=pkgconfig
 %files
 %license LICENSE
 %doc README.md
-%{_bindir}/gamescope
+%caps(cap_sys_nice=eip) %{_bindir}/gamescope
 %{_libdir}/libVkLayer_FROG_gamescope_wsi_*.so
 %{_datadir}/vulkan/implicit_layer.d/VkLayer_FROG_gamescope_wsi.*.json
 
