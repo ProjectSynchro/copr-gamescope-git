@@ -146,6 +146,9 @@ export PKG_CONFIG_PATH=pkgconfig
 /usr/lib64/libwlroots.a
 /usr/lib64/pkgconfig/vkroots.pc
 /usr/lib64/pkgconfig/wlroots.pc
+/usr/include/libliftoff.h
+/usr/lib64/libliftoff.a
+/usr/lib64/pkgconfig/libliftoff.pc
 
 %changelog
 %autochangelog
