@@ -2,13 +2,15 @@
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 %global git_date 20240511T062535Z
 %global tag 3.14.14
-%global libliftoff_minver 0.4.1
+#%global libliftoff_minver 0.4.1
 %global reshade_commit 4245743a8c41abbe3dc73980c1810fe449359bf1
 %global reshade_shortcommit %(c=%{reshade_commit}; echo ${c:0:7})
 %global vkroots_commit 5106d8a0df95de66cc58dc1ea37e69c99afc9540
 %global vkroots_shortcommit %(c=%{vkroots_commit}; echo ${c:0:7})
 %global wlroots_commit a5c9826e6d7d8b504b07d1c02425e6f62b020791
 %global wlroots_shortcommit %(c=%{wlroots_commit}; echo ${c:0:7})
+%global libliftoff_commit 29a06add8ef184f85e37ff8abdc34fbaa2f4ee1e
+%global libliftoff_shortcommit %(c=%{wlroots_commit}; echo ${c:0:7})
 
 Name:           gamescope
 Version:        %{tag}^%{git_date}.git%{shortcommit}
@@ -23,6 +25,7 @@ Source1:        stb.pc
 Source2:        https://github.com/Joshua-Ashton/reshade/archive/%{reshade_commit}/reshade-%{reshade_shortcommit}.tar.gz
 Source3:        https://github.com/Joshua-Ashton/vkroots/archive/%{vkroots_commit}/vkroots-%{vkroots_shortcommit}.tar.gz
 Source4:        https://github.com/Joshua-Ashton/wlroots/archive/%{wlroots_commit}/wlroots-%{wlroots_shortcommit}.tar.gz
+Source5:        https://gitlab.freedesktop.org/emersion/libliftoff/-/archive/%{libliftoff_commit}/libliftoff-%{libliftoff_commit}.tar.gz
 
 Patch01:        0001-cstdint.patch
 
@@ -56,7 +59,7 @@ BuildRequires:  pkgconfig(sdl2)
 BuildRequires:  pkgconfig(libpipewire-0.3)
 BuildRequires:  pkgconfig(libavif)
 #BuildRequires:  (pkgconfig(wlroots) >= 0.18.0 with pkgconfig(wlroots) < 0.19)
-BuildRequires:  (pkgconfig(libliftoff) >= 0.4.1 with pkgconfig(libliftoff) < 0.5)
+#BuildRequires:  (pkgconfig(libliftoff) >= 0.4.1 with pkgconfig(libliftoff) < 0.5)
 BuildRequires:  pkgconfig(libcap)
 BuildRequires:  pkgconfig(hwdata)
 BuildRequires:  pkgconfig(libdecor-0)
@@ -95,7 +98,7 @@ BuildRequires:  pkgconfig(xcb-renderutil)
 BuildRequires:  pkgconfig(xwayland)
 
 # libliftoff hasn't bumped soname, but API/ABI has changed for 0.2.0 release
-Requires:       libliftoff%{?_isa} >= %{libliftoff_minver}
+#Requires:       libliftoff%{?_isa} >= %{libliftoff_minver}
 Requires:       xorg-x11-server-Xwayland
 Recommends:     mesa-dri-drivers
 Recommends:     mesa-vulkan-drivers
@@ -104,7 +107,7 @@ Recommends:     mesa-vulkan-drivers
 %{name} is the micro-compositor optimized for running video games on Wayland.
 
 %prep
-%setup -a2 -a3 -a4 -q -n %{name}-%{commit}
+%setup -a2 -a3 -a4 -a5 -q -n %{name}-%{commit}
 # Install stub pkgconfig file
 mkdir -p pkgconfig
 cp %{SOURCE1} pkgconfig/stb.pc
@@ -118,6 +121,7 @@ rm -rf src/reshade && mv reshade-%{reshade_commit} src/reshade
 # Use vkroots/wlroots from sources instead of submodule
 rm -rf subprojects/vkroots && mv vkroots-%{vkroots_commit} subprojects/vkroots
 rm -rf subprojects/wlroots && mv wlroots-%{wlroots_commit} subprojects/wlroots
+rm -rf subprojects/libliftoff && mv libliftoff-%{libliftoff_commit} subprojects/libliftoff
 
 %autopatch -p1
 
