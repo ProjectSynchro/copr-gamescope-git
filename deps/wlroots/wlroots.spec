@@ -25,9 +25,9 @@ Summary:        A modular Wayland compositor library
 # the main license of the binaries linking with them by
 # the underlying licenses.
 License:        MIT
-URL:            https://gitlab.freedesktop.org/wlroots/wlroots
+URL:            https://github.com/Joshua-Ashton/wlroots
 
-Source0:        %{url}/-/archive/%{commit}/%{name}-%{commit}.tar.gz
+Source0:        %{url}/archive/%{commit}/%{name}-%{shortcommit}.tar.gz
 Source1:        examples.meson.build
 
 BuildRequires:  gcc
