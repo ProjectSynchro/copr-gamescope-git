@@ -53,7 +53,6 @@ BuildRequires:  pkgconfig(libavif) >= 1.0.0
 BuildRequires:  (pkgconfig(wlroots) >= 0.18.0 with pkgconfig(wlroots) < 0.19)
 BuildRequires:  (pkgconfig(libliftoff) >= 0.5.0 with pkgconfig(libliftoff) < 0.6)
 BuildRequires:  pkgconfig(libcap)
-BuildRequires:  pkgconfig(pixman-1) >= 0.42.0
 BuildRequires:  pkgconfig(hwdata)
 BuildRequires:  spirv-headers-devel
 # Enforce the the minimum EVR to contain fixes for all of:
@@ -94,8 +93,15 @@ rm -rf src/reshade && mv reshade-%{reshade_commit} src/reshade
 %autopatch -p1
 
 %build
-export PKG_CONFIG_PATH=pkgconfig
-%meson -Dpipewire=enabled -Denable_openvr_support=false -Dforce_fallback_for=[]
+export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:pkgconfig
+
+MESON_OPTIONS=(
+   -Dpipewire=enabled 
+   -Denable_openvr_support=false 
+   -Dforce_fallback_for=[]
+)
+
+%meson "${MESON_OPTIONS[@]}"
 %meson_build
 
 %install
