@@ -30,8 +30,6 @@ URL:            https://gitlab.freedesktop.org/wlroots/wlroots
 Source0:        %{url}/-/archive/%{commit}/%{name}-%{commit}.tar.gz
 Source1:        examples.meson.build
 
-Patch:          Revert-layer-shell-error-on-0-dimension-without-anch.patch
-
 BuildRequires:  gcc
 BuildRequires:  glslang
 BuildRequires:  gnupg2
