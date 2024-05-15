@@ -91,7 +91,7 @@ MESON_OPTIONS=(
 %install
 %{meson_install}
 install -pm0644 -D '%{SOURCE1}' '%{buildroot}/%{_pkgdocdir}/examples/meson.build'
-sed -i 's/Libs: -L${libdir} -lwlroots/Libs: -L${libdir} -lpixman-1 -lwlroots/' %{_includedir}/pkgconfig/wlroots.pc
+sed -i 's/Libs: -L${libdir} -lwlroots/Libs: -L${libdir} -lpixman-1 -lwlroots/' %{_libdir}/pkgconfig/%{name}.pc
 
 %check
 %{meson_test}
