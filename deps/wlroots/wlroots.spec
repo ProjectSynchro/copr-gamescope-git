@@ -109,3 +109,6 @@ install -pm0644 -D '%{SOURCE1}' '%{buildroot}/%{_pkgdocdir}/examples/meson.build
 %{_includedir}/wlr
 %{_libdir}/lib%{name}.so
 %{_libdir}/pkgconfig/%{name}.pc
+
+%changelog
+%autochangelog
