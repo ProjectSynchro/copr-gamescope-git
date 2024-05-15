@@ -82,6 +82,7 @@ Development files for %{name}.
 MESON_OPTIONS=(
     # Disable options requiring extra/unpackaged dependencies
     -Dexamples=false
+    -Dforce_fallback_for=[]
 )
 
 %{meson} "${MESON_OPTIONS[@]}"
