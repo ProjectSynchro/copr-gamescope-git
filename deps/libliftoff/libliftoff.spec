@@ -33,7 +33,7 @@ developing applications that use %{name}.
 
 
 %prep
-%autosetup -N -n %{name}-%{commit}
+%autosetup -p1 -n %{name}-%{commit}
 
 
 %build
