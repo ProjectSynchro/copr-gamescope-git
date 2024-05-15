@@ -48,7 +48,7 @@ BuildRequires:  pkgconfig(libudev)
 BuildRequires:  pkgconfig(pixman-1) >= 0.42.0
 BuildRequires:  pkgconfig(vulkan)
 BuildRequires:  pkgconfig(wayland-client)
-BuildRequires:  pkgconfig(wayland-protocols) >= 1.32
+BuildRequires:  pkgconfig(wayland-protocols) >= 1.34
 BuildRequires:  pkgconfig(wayland-scanner)
 BuildRequires:  pkgconfig(wayland-server) >= 1.22
 BuildRequires:  pkgconfig(x11-xcb)
