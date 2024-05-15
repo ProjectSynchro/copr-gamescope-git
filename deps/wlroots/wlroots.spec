@@ -77,9 +77,6 @@ Development files for %{name}.
 
 %prep
 %autosetup -N -n %{name}-%{commit}
-# apply unconditional patches (0..99)
-%autopatch -p1 -M99
-# apply conditional patches (100..)
 
 %build
 MESON_OPTIONS=(
