@@ -26,7 +26,11 @@ Summary:        A modular Wayland compositor library
 # the underlying licenses.
 License:        MIT
 URL:            https://gitlab.freedesktop.org/wlroots/wlroots
-Source:         %{url}/-/archive/%{commit}/%{name}-%{commit}.tar.gz
+
+Source0:        %{url}/-/archive/%{commit}/%{name}-%{commit}.tar.gz
+Source1:        examples.meson.build
+
+Patch:          Revert-layer-shell-error-on-0-dimension-without-anch.patch
 
 BuildRequires:  gcc
 BuildRequires:  glslang
@@ -67,7 +71,7 @@ Requires:       %{name}%{?_isa} == %{version}-%{release}
 Recommends:     pkgconfig(xcb-icccm)
 # for examples
 Suggests:       gcc
-Suggests:       meson >= 0.58.0
+Suggests:       meson >= 0.59.0
 Suggests:       pkgconfig(wayland-egl)
 
 %description    devel
@@ -90,6 +94,7 @@ MESON_OPTIONS=(
 
 %install
 %{meson_install}
+install -pm0644 -D '%{SOURCE1}' '%{buildroot}/%{_pkgdocdir}/examples/meson.build'
 
 %check
 %{meson_test}
