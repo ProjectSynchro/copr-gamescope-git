@@ -7,7 +7,7 @@
 %global reshade_shortcommit %(c=%{reshade_commit}; echo ${c:0:7})
 
 Name:           gamescope
-Version:        %{tag}^%{git_date}.git%{shortcommit}
+Version:        %{tag}^%{git_date}.g%{shortcommit}
 Release:        %autorelease
 Summary:        Micro-compositor for video games on Wayland
 

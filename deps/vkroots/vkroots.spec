@@ -4,7 +4,7 @@
 %global git_date 20240429
 
 Name:           vkroots
-Version:        0^%{git_date}git%{shortcommit}
+Version:        0^%{git_date}.g%{shortcommit}
 Release:        %autorelease
 Summary:        A stupid simple method of making Vulkan layers, at home
 License:        LGPL-2.1-or-later AND (Apache-2.0 or MIT)

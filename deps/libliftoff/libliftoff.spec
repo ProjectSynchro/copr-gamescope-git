@@ -3,7 +3,7 @@
 %global git_date 20240515
 
 Name:           libliftoff
-Version:        0.5.0^%{git_date}git%{shortcommit}
+Version:        0.5.0^%{git_date}.g%{shortcommit}
 Release:        %autorelease
 Summary:        Lightweight KMS plane library
 
