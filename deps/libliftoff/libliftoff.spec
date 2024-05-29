@@ -1,6 +1,6 @@
-%global commit 8d45eeae7f17459d4ca85680832df0a875b5f64b
+%global commit 29a06add8ef184f85e37ff8abdc34fbaa2f4ee1e
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
-%global git_date 20240515
+%global git_date 20231221
 
 Name:           libliftoff
 Version:        0.5.0^%{git_date}.g%{shortcommit}
