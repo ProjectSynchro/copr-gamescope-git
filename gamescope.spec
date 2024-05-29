@@ -41,6 +41,7 @@ BuildRequires:  pkgconfig(xfixes)
 BuildRequires:  pkgconfig(xxf86vm)
 BuildRequires:  pkgconfig(xtst)
 BuildRequires:  pkgconfig(xres)
+BuildRequires:  pkgconfig(libcap)
 BuildRequires:  pkgconfig(libdrm)
 BuildRequires:  pkgconfig(vulkan)
 BuildRequires:  pkgconfig(wayland-scanner)
@@ -52,7 +53,7 @@ BuildRequires:  pkgconfig(libpipewire-0.3)
 BuildRequires:  pkgconfig(libavif) >= 1.0.0
 BuildRequires:  (pkgconfig(wlroots) >= 0.18.0 with pkgconfig(wlroots) < 0.19)
 BuildRequires:  (pkgconfig(libliftoff) >= 0.5.0 with pkgconfig(libliftoff) < 0.6)
-BuildRequires:  pkgconfig(libcap)
+BuildRequires:  (pkgconfig(openvr) >= 2 with pkgconfig(libliftoff) < 3)
 BuildRequires:  pkgconfig(hwdata)
 BuildRequires:  spirv-headers-devel
 # Enforce the the minimum EVR to contain fixes for all of:
@@ -97,7 +98,7 @@ export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:pkgconfig
 
 MESON_OPTIONS=(
    -Dpipewire=enabled 
-   -Denable_openvr_support=false 
+   -Denable_openvr_support=true 
    -Dforce_fallback_for=[]
 )
 
