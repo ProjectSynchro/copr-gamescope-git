@@ -1,0 +1,13 @@
+diff --git a/samples/CMakeLists.txt b/samples/CMakeLists.txt
+index 545ff1a..3270bcb 100644
+--- a/samples/CMakeLists.txt
++++ b/samples/CMakeLists.txt
+@@ -52,7 +52,7 @@ set(SHARED_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/shared)
+ # (needed to prevent a segfault in OpenVR).
+ if(CMAKE_HOST_UNIX)
+   find_file(OPENVRPATHS openvrpaths.vrpath PATHS $ENV{HOME}/.config/openvr "$ENV{HOME}/Library/Application Support/OpenVR/.openvr")
+-  if(${OPENVRPATHS} MATCHES OPENVRPATHS-NOTFOUND)
++  if(${OPENVRPATHS} MATCHES OPENVRPATHS-NOTFOUND AND NOT SKIP_STEAMVR_CHECK)
+     message(FATAL_ERROR "${OPENVRPATHS} Please install SteamVR SDK to continue..")
+   endif()
+ endif()

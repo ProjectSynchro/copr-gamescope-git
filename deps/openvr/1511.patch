@@ -1,0 +1,53 @@
+From 9803a10192582b21c1bbcbc4c625a1c641ab5b1d Mon Sep 17 00:00:00 2001
+From: Dan Church <amphetamachine@gmail.com>
+Date: Sat, 23 Jan 2021 15:59:00 -0600
+Subject: [PATCH 1/2] Use GNUInstallDirs to determine lib install path
+
+---
+ src/CMakeLists.txt | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index 29b69c5c..4da45b62 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -4,6 +4,8 @@ project(openvr_api)
+ set( LIBNAME "openvr_api" )
+ set(OPENVR_HEADER_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../headers)
+ 
++include(GNUInstallDirs)
++
+ # Set some properies for specific files.
+ if(APPLE)
+   set(CMAKE_MACOSX_RPATH 1)
+@@ -101,7 +103,7 @@ endif()
+ target_link_libraries(${LIBNAME} ${EXTRA_LIBS} ${CMAKE_DL_LIBS})
+ target_include_directories(${LIBNAME} PUBLIC ${OPENVR_HEADER_DIR})
+ 
+-install(TARGETS ${LIBNAME} DESTINATION lib)
++install(TARGETS ${LIBNAME} DESTINATION ${CMAKE_INSTALL_LIBDIR})
+ install(FILES ${PUBLIC_HEADER_FILES} DESTINATION include/openvr)
+ 
+ # Generate a .pc file for linux environments
+
+From 69ad8a0810e1941062833fdec37e1e9632f390e2 Mon Sep 17 00:00:00 2001
+From: Dan Church <amphetamachine@gmail.com>
+Date: Sat, 23 Jan 2021 16:07:36 -0600
+Subject: [PATCH 2/2] Update pkg-config entry
+
+---
+ src/openvr.pc.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/openvr.pc.in b/src/openvr.pc.in
+index 3edba91c..0041a5ce 100644
+--- a/src/openvr.pc.in
++++ b/src/openvr.pc.in
+@@ -1,6 +1,6 @@
+ prefix=@CMAKE_INSTALL_PREFIX@
+ exec_prefix=${prefix}
+-libdir=${prefix}/lib
++libdir=@CMAKE_INSTALL_FULL_LIBDIR@
+ includedir=${prefix}/include/openvr
+ 
+ Name: openvr
