@@ -107,7 +107,7 @@ MESON_OPTIONS=(
    -Drt_cap=enabled
    -Davif_screenshots=enabled
    -Dsdl2_backend=enabled
-   -Denable_openvr_support=true 
+   -Denable_openvr_support=false
    -Dforce_fallback_for=vkroots,wlroots,libliftoff
 )
 
