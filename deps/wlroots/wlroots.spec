@@ -92,7 +92,7 @@ MESON_OPTIONS=(
 install -pm0644 -D '%{SOURCE1}' '%{buildroot}/%{_pkgdocdir}/examples/meson.build'
 
 %if 0%{?fedora} && "%{?dist}" == ".fc41"
-sed -i 's/Libs: -L${libdir} -lwlroots/Libs: -L${libdir} -lpixman-1 -lwlroots/' %{_buildrootdir}/%{name}-%{version}-%{release}.%{_arch}/BUILDROOT/%{_libdir}/pkgconfig/%{name}.pc
+sed -i 's/Libs: -L${libdir} -lwlroots/Libs: -L${libdir} -lpixman-1 -lwlroots/' %{buildroot}/%{_libdir}/pkgconfig/%{name}.pc
 %else
 sed -i 's/Libs: -L${libdir} -lwlroots/Libs: -L${libdir} -lpixman-1 -lwlroots/' %{_buildrootdir}/%{name}-%{version}-%{release}.%{_arch}/%{_libdir}/pkgconfig/%{name}.pc
 %endif
