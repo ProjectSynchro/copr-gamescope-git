@@ -91,12 +91,9 @@ MESON_OPTIONS=(
 %{meson_install}
 install -pm0644 -D '%{SOURCE1}' '%{buildroot}/%{_pkgdocdir}/examples/meson.build'
 
-
-%if 0%{?fedora} && 0%{?releasever} == rawhide
-# Commands or scripts to run only on Fedora Rawhide
+%if 0%{?fedora} && 0%{?releasever} == 41
 sed -i 's/Libs: -L${libdir} -lwlroots/Libs: -L${libdir} -lpixman-1 -lwlroots/' %{_buildrootdir}/%{name}-%{version}-%{release}.%{_arch}/BUILDROOT/%{_libdir}/pkgconfig/%{name}.pc
 %else
-# Commands or scripts to run on any other platform
 sed -i 's/Libs: -L${libdir} -lwlroots/Libs: -L${libdir} -lpixman-1 -lwlroots/' %{_buildrootdir}/%{name}-%{version}-%{release}.%{_arch}/%{_libdir}/pkgconfig/%{name}.pc
 %endif
 
