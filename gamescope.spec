@@ -2,9 +2,7 @@
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 %global git_date 20240627T012545Z
 %global tag 3.14.22
-%global libliftoff_minver 0.5.0
-%global reshade_commit 4245743a8c41abbe3dc73980c1810fe449359bf1
-%global reshade_shortcommit %(c=%{reshade_commit}; echo ${c:0:7})
+%global libliftoff_minver 0.4.1
 
 Name:           gamescope
 Version:        %{tag}^%{git_date}.g%{shortcommit}
@@ -13,12 +11,9 @@ Summary:        Micro-compositor for video games on Wayland
 
 License:        BSD
 URL:            https://github.com/ValveSoftware/gamescope
-Source0:        %{url}/archive/%{commit}.tar.gz
 # Create stb.pc to satisfy dependency('stb')
-Source1:        stb.pc
-Source2:        https://github.com/Joshua-Ashton/reshade/archive/%{reshade_commit}/reshade-%{reshade_shortcommit}.tar.gz
+Source0:        stb.pc
 
-Patch01:        0001-cstdint.patch
 
 BuildRequires:  meson >= 0.54.0
 BuildRequires:  ninja-build
@@ -27,11 +22,12 @@ BuildRequires:  gcc
 BuildRequires:  gcc-c++
 BuildRequires:  glm-devel
 BuildRequires:  google-benchmark-devel
-BuildRequires:  libeis-devel
 BuildRequires:  libXmu-devel
 BuildRequires:  libXcursor-devel
-BuildRequires:  pkgconfig(libdecor-0)
+BuildRequires:  libeis-devel
+BuildRequires:  pixman-devel
 BuildRequires:  pkgconfig(libdisplay-info)
+BuildRequires:  pkgconfig(pixman-1)
 BuildRequires:  pkgconfig(x11)
 BuildRequires:  pkgconfig(xdamage)
 BuildRequires:  pkgconfig(xcomposite)
@@ -41,7 +37,6 @@ BuildRequires:  pkgconfig(xfixes)
 BuildRequires:  pkgconfig(xxf86vm)
 BuildRequires:  pkgconfig(xtst)
 BuildRequires:  pkgconfig(xres)
-BuildRequires:  pkgconfig(libcap)
 BuildRequires:  pkgconfig(libdrm)
 BuildRequires:  pkgconfig(vulkan)
 BuildRequires:  pkgconfig(wayland-scanner)
@@ -51,9 +46,9 @@ BuildRequires:  pkgconfig(xkbcommon)
 BuildRequires:  pkgconfig(sdl2)
 BuildRequires:  pkgconfig(libpipewire-0.3)
 BuildRequires:  pkgconfig(libavif) >= 1.0.0
-BuildRequires:  (pkgconfig(wlroots) >= 0.18.0 with pkgconfig(wlroots) < 0.19)
-BuildRequires:  (pkgconfig(libliftoff) >= 0.5.0 with pkgconfig(libliftoff) < 0.6)
-BuildRequires:  (pkgconfig(openvr) >= 2 with pkgconfig(openvr) < 3)
+BuildRequires:  (pkgconfig(wlroots) >= 0.18.0 with pkgconfig(wlroots) < 0.19.0)
+BuildRequires:  (pkgconfig(libliftoff) >= 0.4.1 with pkgconfig(libliftoff) < 0.5)
+BuildRequires:  pkgconfig(libcap)
 BuildRequires:  pkgconfig(hwdata)
 BuildRequires:  spirv-headers-devel
 # Enforce the the minimum EVR to contain fixes for all of:
@@ -67,56 +62,72 @@ BuildRequires:  stb_image_resize-devel
 BuildRequires:  stb_image_resize-static
 BuildRequires:  stb_image_write-devel
 BuildRequires:  stb_image_write-static
-BuildRequires:  vkroots-devel
 BuildRequires:  /usr/bin/glslangValidator
+BuildRequires:  libdecor-devel
+BuildRequires:  libXdamage-devel
+BuildRequires:  xorg-x11-server-Xwayland-devel
+BuildRequires:  git
 
 # libliftoff hasn't bumped soname, but API/ABI has changed for 0.2.0 release
 Requires:       libliftoff%{?_isa} >= %{libliftoff_minver}
 Requires:       xorg-x11-server-Xwayland
+Requires:       gamescope-libs = %{version}-%{release}
+Requires:       gamescope-libs(x86-32) = %{version}-%{release}
 Recommends:     mesa-dri-drivers
 Recommends:     mesa-vulkan-drivers
 
 %description
 %{name} is the micro-compositor optimized for running video games on Wayland.
 
+%package libs
+Summary:	libs for %{name}
+%description libs
+%summary
+
 %prep
-%autosetup -p1 -a2 -N -n %{name}-%{commit}
-# Install stub pkgconfig file
+git clone --single-branch --branch master https://github.com/ValveSoftware/gamescope
+cd gamescope
+git checkout %{commit}
+git submodule update --init --recursive
 mkdir -p pkgconfig
-cp %{SOURCE1} pkgconfig/stb.pc
+cp %{SOURCE0} pkgconfig/stb.pc
 
 # Replace spirv-headers include with the system directory
 sed -i 's^../thirdparty/SPIRV-Headers/include/spirv/^/usr/include/spirv/^' src/meson.build
 
-# Push in reshade from sources instead of submodule
-rm -rf src/reshade && mv reshade-%{reshade_commit} src/reshade
-
 %autopatch -p1
 
 %build
-export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:pkgconfig
+cd gamescope
+export PKG_CONFIG_PATH=pkgconfig
 
 MESON_OPTIONS=(
-   -Dpipewire=enabled 
+   -Dpipewire=enabled
+   -Dinput_emulation=enabled
+   -Drt_cap=enabled
+   -Davif_screenshots=enabled
+   -Dsdl2_backend=enabled
    -Denable_openvr_support=true 
-   -Dforce_fallback_for=[]
+   -Dforce_fallback_for=vkroots,wlroots,libliftoff
 )
 
 %meson "${MESON_OPTIONS[@]}"
 %meson_build
 
 %install
-%meson_install
+cd gamescope
+%meson_install --skip-subprojects
 
 %files
-%license LICENSE
-%doc README.md
+%license gamescope/LICENSE
+%doc gamescope/README.md
 %caps(cap_sys_nice=eip) %{_bindir}/gamescope
 %{_bindir}/gamescopestream
 %{_bindir}/gamescopectl
-%{_libdir}/libVkLayer_FROG_gamescope_wsi_*.so
-%{_datadir}/vulkan/implicit_layer.d/VkLayer_FROG_gamescope_wsi.*.json
 
+%files libs
+%{_libdir}/*.so
+%{_datadir}/vulkan/implicit_layer.d/
 
 %changelog
 %autochangelog
