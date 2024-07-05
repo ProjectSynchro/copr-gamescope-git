@@ -1,6 +1,6 @@
-%global commit f8ea81f109f162cdca67dd4c3985faec5b55e848
+%global commit 4d8b4f1a65f330e2617a0d1c57aacff94b3cc02a
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
-%global git_date 20240705T085251Z
+%global git_date 20240705T092501Z
 %global tag 3.14.22
 %global libliftoff_minver 0.4.1
 
