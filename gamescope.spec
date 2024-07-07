@@ -121,9 +121,9 @@ cd gamescope
 %license gamescope/LICENSE
 %doc gamescope/README.md
 %caps(cap_sys_nice=eip) %{_bindir}/gamescope
-%{_bindir}/gamescopestream
 %{_bindir}/gamescopectl
-
+%{_bindir}/gamescopereaper
+%{_bindir}/gamescopestream
 %files libs
 %{_libdir}/*.so
 %{_datadir}/vulkan/implicit_layer.d/
