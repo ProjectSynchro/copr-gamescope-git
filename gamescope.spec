@@ -26,6 +26,7 @@ BuildRequires:  libXmu-devel
 BuildRequires:  libXcursor-devel
 BuildRequires:  libeis-devel
 BuildRequires:  pixman-devel
+BuildRequires:  pkgconfig(lcms2)
 BuildRequires:  pkgconfig(libdisplay-info)
 BuildRequires:  pkgconfig(pixman-1)
 BuildRequires:  pkgconfig(x11)
