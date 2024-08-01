@@ -1,5 +1,5 @@
 Name:           wayland-protocols
-Version:        1.34
+Version:        1.35
 Release:        1%{?dist}
 Summary:        Wayland protocols that adds functionality not available in the core protocol
 
@@ -48,6 +48,9 @@ wayland-protocols.
 %{_datadir}/%{name}/
 
 %changelog
+* Thu Aug 01 2024 Jack Greiner <jack@emoss.org> - 1.35-1
+- Update to 1.35
+
 * Thu Mar 21 2024 Neal Gompa <ngompa@fedoraproject.org> - 1.34-1
 - Update to 1.34
 

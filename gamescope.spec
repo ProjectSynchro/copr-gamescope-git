@@ -41,7 +41,7 @@ BuildRequires:  pkgconfig(libdrm) >= 2.4.114
 BuildRequires:  pkgconfig(vulkan)
 BuildRequires:  pkgconfig(wayland-scanner)
 BuildRequires:  pkgconfig(wayland-server) >= 1.23
-BuildRequires:  pkgconfig(wayland-protocols) >= 1.34
+BuildRequires:  pkgconfig(wayland-protocols) >= 1.35
 BuildRequires:  pkgconfig(xkbcommon)
 BuildRequires:  pkgconfig(sdl2)
 BuildRequires:  pkgconfig(libpipewire-0.3)
