@@ -26,9 +26,8 @@ BuildRequires:  libXmu-devel
 BuildRequires:  libXcursor-devel
 BuildRequires:  libeis-devel
 BuildRequires:  pixman-devel
-BuildRequires:  pkgconfig(lcms2)
 BuildRequires:  pkgconfig(libdisplay-info)
-BuildRequires:  pkgconfig(pixman-1)
+BuildRequires:  pkgconfig(pixman-1) >= 0.42.0
 BuildRequires:  pkgconfig(x11)
 BuildRequires:  pkgconfig(xdamage)
 BuildRequires:  pkgconfig(xcomposite)
@@ -38,11 +37,11 @@ BuildRequires:  pkgconfig(xfixes)
 BuildRequires:  pkgconfig(xxf86vm)
 BuildRequires:  pkgconfig(xtst)
 BuildRequires:  pkgconfig(xres)
-BuildRequires:  pkgconfig(libdrm)
+BuildRequires:  pkgconfig(libdrm) >= 2.4.114
 BuildRequires:  pkgconfig(vulkan)
 BuildRequires:  pkgconfig(wayland-scanner)
-BuildRequires:  pkgconfig(wayland-server)
-BuildRequires:  pkgconfig(wayland-protocols) >= 1.17
+BuildRequires:  pkgconfig(wayland-server) >= 1.23
+BuildRequires:  pkgconfig(wayland-protocols) >= 1.34
 BuildRequires:  pkgconfig(xkbcommon)
 BuildRequires:  pkgconfig(sdl2)
 BuildRequires:  pkgconfig(libpipewire-0.3)
@@ -50,6 +49,25 @@ BuildRequires:  pkgconfig(libavif) >= 1.0.0
 BuildRequires:  pkgconfig(libcap)
 BuildRequires:  pkgconfig(hwdata)
 BuildRequires:  spirv-headers-devel
+
+## Bundled wlroots dependencies
+BuildRequires:  pkgconfig(egl)
+BuildRequires:  pkgconfig(gbm) >= 17.1.0
+BuildRequires:  pkgconfig(glesv2)
+BuildRequires:  pkgconfig(lcms2)
+BuildRequires:  pkgconfig(libinput) >= 1.21.0
+BuildRequires:  pkgconfig(libseat)
+BuildRequires:  pkgconfig(libudev)
+BuildRequires:  pkgconfig(wayland-client)
+BuildRequires:  pkgconfig(x11-xcb)
+BuildRequires:  pkgconfig(xcb)
+BuildRequires:  pkgconfig(xcb-errors)
+BuildRequires:  pkgconfig(xcb-icccm)
+BuildRequires:  pkgconfig(xcb-renderutil)
+BuildRequires:  pkgconfig(xkbcommon)
+
+
+
 # Enforce the the minimum EVR to contain fixes for all of:
 # CVE-2021-28021 CVE-2021-42715 CVE-2021-42716 CVE-2022-28041 CVE-2023-43898
 # CVE-2023-45661 CVE-2023-45662 CVE-2023-45663 CVE-2023-45664 CVE-2023-45666
