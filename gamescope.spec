@@ -85,8 +85,6 @@ BuildRequires:  libXdamage-devel
 BuildRequires:  xorg-x11-server-Xwayland-devel
 BuildRequires:  git
 
-# libliftoff hasn't bumped soname, but API/ABI has changed for 0.2.0 release
-Requires:       libliftoff%{?_isa} >= %{libliftoff_minver}
 Requires:       xorg-x11-server-Xwayland
 Requires:       gamescope-libs = %{version}-%{release}
 Recommends:     mesa-dri-drivers
