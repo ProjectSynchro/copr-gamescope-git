@@ -18,9 +18,11 @@ jobs:
           latest_commit=$(curl -s https://api.github.com/repos/ValveSoftware/gamescope/commits/master | jq -r '.sha')
           git_date=$(curl -s https://api.github.com/repos/ValveSoftware/gamescope/commits/master | jq -r '.commit.committer.date' | sed 's/[-:]//g')
           latest_tag=$(curl -s https://api.github.com/repos/ValveSoftware/gamescope/tags | jq -r '.[0].name')
+          # Sanitize the latest tag by replacing illegal characters with underscores
+          sanitized_tag=$(echo "$latest_tag" | sed -E 's/[^a-zA-Z0-9\.]/_/g')
           echo "latest-commit=$latest_commit" >> $GITHUB_OUTPUT
           echo "git-date=$git_date" >> $GITHUB_OUTPUT
-          echo "latest-tag=$latest_tag" >> $GITHUB_OUTPUT
+          echo "latest-tag=$sanitized_tag" >> $GITHUB_OUTPUT
 
       - name: Get Current Commit
         id: get-current-commit
