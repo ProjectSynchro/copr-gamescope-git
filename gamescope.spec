@@ -1,7 +1,7 @@
-%global commit d4ca0b979732ad6433fe4d0c4a29af7647777ae7
+%global commit b1886b8bb7c92a4aa045a79c5e3a76c8bf83a55e
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
-%global git_date 20240829T230642Z
-%global tag 3.15.4_beta_for_steamos_main
+%global git_date 20240905T164449Z
+%global tag 3.15.5
 %global libliftoff_minver 0.4.1
 
 Name:           gamescope
