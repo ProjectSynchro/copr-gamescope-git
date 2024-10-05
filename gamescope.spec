@@ -103,15 +103,13 @@ git clone --single-branch --branch master https://github.com/ValveSoftware/games
 cd gamescope
 git checkout %{commit}
 git submodule update --init --recursive
-
-%autopatch -p1
-
-# Apply additional manual changes after patches
 mkdir -p pkgconfig
 cp %{SOURCE0} pkgconfig/stb.pc
 
 # Replace spirv-headers include with the system directory
 sed -i 's^../thirdparty/SPIRV-Headers/include/spirv/^/usr/include/spirv/^' src/meson.build
+
+%autopatch -p1
 
 %build
 cd gamescope
