@@ -1,0 +1,39 @@
+From c9cda2e202a16078a6dd06f95d3e5bf5dd36708c Mon Sep 17 00:00:00 2001
+From: laurirasanen <lauri@rasanen.dev>
+Date: Sun, 29 Sep 2024 19:54:49 +0300
+Subject: [PATCH] rendervulkan: Fix getting drm formats on sdl backend
+
+---
+ src/rendervulkan.cpp | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/src/rendervulkan.cpp b/src/rendervulkan.cpp
+index d61fd73ea..4c9010438 100644
+--- a/src/rendervulkan.cpp
++++ b/src/rendervulkan.cpp
+@@ -2059,7 +2059,7 @@ bool CVulkanTexture::BInit( uint32_t width, uint32_t height, uint32_t depth, uin
+ 		assert( drmFormat == pDMA->format );
+ 	}
+ 
+-	if ( GetBackend()->UsesModifiers() && g_device.supportsModifiers() && pDMA && pDMA->modifier != DRM_FORMAT_MOD_INVALID )
++	if ( g_device.supportsModifiers() && pDMA && pDMA->modifier != DRM_FORMAT_MOD_INVALID )
+ 	{
+ 		VkExternalImageFormatProperties externalImageProperties = {
+ 			.sType = VK_STRUCTURE_TYPE_EXTERNAL_IMAGE_FORMAT_PROPERTIES,
+@@ -2781,14 +2781,14 @@ bool vulkan_init_format(VkFormat format, uint32_t drmFormat)
+ 			uint64_t modifier = modifierProps[j].drmFormatModifier;
+ 
+ 			if ( !is_image_format_modifier_supported( format, drmFormat, modifier ) )
+-			continue;
++				continue;
+ 
+ 			if ( ( modifierProps[j].drmFormatModifierTilingFeatures & VK_FORMAT_FEATURE_SAMPLED_IMAGE_BIT ) == 0 )
+ 			{
+ 				continue;
+ 			}
+ 
+-			if ( !gamescope::Algorithm::Contains( GetBackend()->GetSupportedModifiers( drmFormat ), modifier ) )
++			if ( GetBackend()->UsesModifiers() && !gamescope::Algorithm::Contains( GetBackend()->GetSupportedModifiers( drmFormat ), modifier ) )
+ 				continue;
+ 
+ 			wlr_drm_format_set_add( &sampledDRMFormats, drmFormat, modifier );
