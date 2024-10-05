@@ -13,7 +13,7 @@ License:        BSD
 URL:            https://github.com/ValveSoftware/gamescope
 # Create stb.pc to satisfy dependency('stb')
 Source0:        stb.pc
-
+Patch0:         001-fix-sdl-backend-on-rdna3.patch
 
 BuildRequires:  meson >= 0.54.0
 BuildRequires:  ninja-build
