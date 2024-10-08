@@ -25,6 +25,7 @@ BuildRequires:  google-benchmark-devel
 BuildRequires:  libXmu-devel
 BuildRequires:  libXcursor-devel
 BuildRequires:  libeis-devel
+BuildRequires:  luajit-devel
 BuildRequires:  pixman-devel
 BuildRequires:  pkgconfig(libdisplay-info)
 BuildRequires:  pkgconfig(pixman-1) >= 0.42.0
