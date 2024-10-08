@@ -142,6 +142,7 @@ cd gamescope
 %{_bindir}/gamescopectl
 %{_bindir}/gamescopereaper
 %{_bindir}/gamescopestream
+%{_datadir}/gamescope/scripts/
 %files libs
 %{_libdir}/*.so
 %{_datadir}/vulkan/implicit_layer.d/
