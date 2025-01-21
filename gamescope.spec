@@ -1,6 +1,6 @@
-%global commit 328f06b0b5e4492cf26c7b2a6e3fe628718caddd
+%global commit 19dc18e81a0b4ea5fc340b225150ac4b8ee729fc
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
-%global git_date 20250117T012030Z
+%global git_date 20250121T163006Z
 %global tag dmemcg_experimental
 %global libliftoff_minver 0.4.1
 
