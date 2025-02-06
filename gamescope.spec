@@ -1,11 +1,11 @@
 %global commit ef1e8dbe49da7ee87120c243f7d1d6935590cc76
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
-%global git_date 20250123T103953Z
-%global tag 3.16.1
+%global git_date 20250123
+%global tag replaceme
 %global libliftoff_minver 0.4.1
 
 Name:           gamescope
-Version:        %{tag}^%{git_date}.g%{shortcommit}
+Version:        %{tag}^%{git_date}.git%{shortcommit}
 Release:        %autorelease
 Summary:        Micro-compositor for video games on Wayland
 
