@@ -5,6 +5,7 @@
 %global libliftoff_minver 0.4.1
 
 Name:           gamescope
+Epoch:          1
 Version:        %{tag}^%{git_date}.git%{shortcommit}
 Release:        %autorelease
 Summary:        Micro-compositor for video games on Wayland
