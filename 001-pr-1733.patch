@@ -1,0 +1,99 @@
+From 767f620939d48f375b7559beda486250ffc41709 Mon Sep 17 00:00:00 2001
+From: MithicSpirit <rpc01234@gmail.com>
+Date: Thu, 30 Jan 2025 15:54:26 -0500
+Subject: [PATCH 1/2] WaylandBackend: prevent crash after closing window
+
+Whenever a window was closed*, gamescope would segfault due to calling
+IsSurfacePlane with null (from Wayland_Pointer_Leave, and maybe a few
+other places). This is addressed by having IsSurfacePlane short-circuit
+if it's passed null.
+
+HACK: I feel like IsSurfacePlane shouldn't ever be called with a null
+pointer, but this is the easiest way to solve this for now, and the code
+needs refactoring anyway.
+
+*Due to the "zombie window" issue, windows aren't necessarily closed
+when you think they should be. This will be addressed in the next
+commit.
+---
+ src/Backends/WaylandBackend.cpp | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/src/Backends/WaylandBackend.cpp b/src/Backends/WaylandBackend.cpp
+index e924ac865..fa11ca802 100644
+--- a/src/Backends/WaylandBackend.cpp
++++ b/src/Backends/WaylandBackend.cpp
+@@ -76,7 +76,9 @@ static inline uint32_t WaylandScaleToLogical( uint32_t pValue, uint32_t pFactor
+ }
+ 
+ static bool IsSurfacePlane( wl_surface *pSurface ) {
+-    return wl_proxy_get_tag( (wl_proxy *)pSurface ) == &GAMESCOPE_plane_tag;
++    // HACK: this probably should never be called with a null pointer, but it
++    // was happening after a window was closed.
++    return pSurface && (wl_proxy_get_tag( (wl_proxy *)pSurface ) == &GAMESCOPE_plane_tag);
+ }
+ 
+ #define WAYLAND_NULL() []<typename... Args> ( void *pData, Args... args ) { }
+
+From 52cd4cac4bde95f2686efd04f7126de17337018b Mon Sep 17 00:00:00 2001
+From: MithicSpirit <rpc01234@gmail.com>
+Date: Thu, 30 Jan 2025 16:01:10 -0500
+Subject: [PATCH 2/2] WaylandBackend: fix "zombie windows"
+
+When the last gamescope client closes, the wayland backend tries to
+close the window until a new client appears. However, this is done in
+the destructor for the connector for the window, which is stored in
+a shared_ptr. This shared_ptr was held by both steamcompmgr (which
+correctly dropped it) and by the wayland backend, which would never drop
+it. This led to the first window being kept around as a "zombie window",
+which would show the last frame from the previous client, but otherwise
+never update (the backend would only hold a reference to the first
+window, and no subsequent ones).
+
+This fixes this issue by downgrading the shared_ptr held by the backend
+into a weak_ptr. Thus, the only owning reference to the backend at
+(almost) any given point is held by steamcompmgr, which allows the
+window to be correctly closed when steamcompmgr drops it. This also
+allows for the connector held by the wayland backend to be updated when
+a new window is created.
+
+HACK: This is *NOT* memory-safe, and will result in a segmentation fault
+if the connector held by the wayland backend is used (e.g., via
+::GetCurrentConnector) after it was dropped by steamcompmgr. The code
+already included a TODO to remove the need for the backend to hold
+a reference to the connection, and this is still necessary.
+---
+ src/Backends/WaylandBackend.cpp | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/src/Backends/WaylandBackend.cpp b/src/Backends/WaylandBackend.cpp
+index fa11ca802..ffa4b248b 100644
+--- a/src/Backends/WaylandBackend.cpp
++++ b/src/Backends/WaylandBackend.cpp
+@@ -722,7 +722,7 @@ namespace gamescope
+         xdg_toplevel_icon_manager_v1 *m_pToplevelIconManager = nullptr;
+ 
+         // TODO: Restructure and remove the need for this.
+-        std::shared_ptr<CWaylandConnector> m_pFocusConnector;
++        std::weak_ptr<CWaylandConnector> m_pFocusConnector;
+ 
+         wl_data_device_manager *m_pDataDeviceManager = nullptr;
+         wl_data_device *m_pDataDevice = nullptr;
+@@ -2043,7 +2043,7 @@ namespace gamescope
+ 
+     IBackendConnector *CWaylandBackend::GetCurrentConnector()
+     {
+-        return m_pFocusConnector.get();
++        return m_pFocusConnector.lock().get();
+     }
+     IBackendConnector *CWaylandBackend::GetConnector( GamescopeScreenType eScreenType )
+     {
+@@ -2115,7 +2115,7 @@ namespace gamescope
+     std::shared_ptr<IBackendConnector> CWaylandBackend::CreateVirtualConnector( uint64_t ulVirtualConnectorKey )
+     {
+         std::shared_ptr<CWaylandConnector> pConnector = std::make_shared<CWaylandConnector>( this, ulVirtualConnectorKey );
+-        if ( !m_pFocusConnector )
++        if ( m_pFocusConnector.expired() )
+             m_pFocusConnector = pConnector;
+ 
+         if ( !pConnector->Init() )
