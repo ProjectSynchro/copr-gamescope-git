@@ -14,7 +14,6 @@ License:        BSD
 URL:            https://github.com/ValveSoftware/gamescope
 # Create stb.pc to satisfy dependency('stb')
 Source0:        stb.pc
-Patch1:         001-pr-1733.patch
 
 BuildRequires:  meson >= 0.54.0
 BuildRequires:  ninja-build
@@ -106,7 +105,8 @@ cd gamescope
 git checkout %{commit}
 git submodule update --init --recursive
 
-%autopatch -p1
+# Disable autopatch for now
+
 
 # Apply additional manual changes after patches
 mkdir -p pkgconfig
