@@ -86,7 +86,7 @@ BuildRequires:  xorg-x11-server-Xwayland-devel
 BuildRequires:  git
 
 Requires:       xorg-x11-server-Xwayland
-Requires:       gamescope-libs = %{epoch}:%{version}-%{release}
+Requires:       gamescope-libs = %{version}-%{release}
 Recommends:     mesa-dri-drivers
 Recommends:     mesa-vulkan-drivers
 
