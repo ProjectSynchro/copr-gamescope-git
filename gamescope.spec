@@ -87,6 +87,11 @@ BuildRequires:  git
 
 Requires:       xorg-x11-server-Xwayland
 Requires:       gamescope-libs = %{version}-%{release}
+
+%ifarch x86_64
+Requires:       gamescope-libs(x86-32) = %{version}-%{release}
+%endif
+
 Recommends:     mesa-dri-drivers
 Recommends:     mesa-vulkan-drivers
 
