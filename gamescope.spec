@@ -39,11 +39,11 @@ BuildRequires:  pkgconfig(xfixes)
 BuildRequires:  pkgconfig(xxf86vm)
 BuildRequires:  pkgconfig(xtst)
 BuildRequires:  pkgconfig(xres)
-BuildRequires:  pkgconfig(libdrm) >= 2.4.114
+BuildRequires:  pkgconfig(libdrm) >= 2.4.113
 BuildRequires:  pkgconfig(vulkan)
 BuildRequires:  pkgconfig(wayland-scanner)
-BuildRequires:  pkgconfig(wayland-server) >= 1.23
-BuildRequires:  pkgconfig(wayland-protocols) >= 1.35
+BuildRequires:  pkgconfig(wayland-server) >= 1.21
+BuildRequires:  pkgconfig(wayland-protocols) >= 1.41
 BuildRequires:  pkgconfig(xkbcommon)
 BuildRequires:  pkgconfig(sdl2)
 BuildRequires:  pkgconfig(luajit)
