@@ -14,6 +14,9 @@ URL:            https://github.com/ValveSoftware/gamescope
 # Create stb.pc to satisfy dependency('stb')
 Source0:        stb.pc
 
+Patch1:         001-fix-linking-pr1812.patch
+Patch2:         002-silence-meson-error.patch
+
 BuildRequires:  meson >= 0.54.0
 BuildRequires:  ninja-build
 BuildRequires:  cmake
@@ -24,7 +27,6 @@ BuildRequires:  google-benchmark-devel
 BuildRequires:  libXmu-devel
 BuildRequires:  libXcursor-devel
 BuildRequires:  libeis-devel
-BuildRequires:  luajit-devel
 BuildRequires:  pixman-devel
 BuildRequires:  pkgconfig(libdisplay-info)
 BuildRequires:  pkgconfig(pixman-1) >= 0.42.0
@@ -44,6 +46,8 @@ BuildRequires:  pkgconfig(wayland-server) >= 1.23
 BuildRequires:  pkgconfig(wayland-protocols) >= 1.35
 BuildRequires:  pkgconfig(xkbcommon)
 BuildRequires:  pkgconfig(sdl2)
+BuildRequires:  pkgconfig(luajit)
+BuildRequires:  pkgconfig(openvr) >= 2.7
 BuildRequires:  pkgconfig(libpipewire-0.3)
 BuildRequires:  pkgconfig(libavif) >= 1.0.0
 BuildRequires:  pkgconfig(libcap)
@@ -109,8 +113,8 @@ cd gamescope
 git checkout %{commit}
 git submodule update --init --recursive
 
-# Disable autopatch for now
-
+# Apply patches
+%autopatch -p1
 
 # Apply additional manual changes after patches
 mkdir -p pkgconfig
@@ -124,12 +128,16 @@ cd gamescope
 export PKG_CONFIG_PATH=pkgconfig
 
 MESON_OPTIONS=(
+   -Dbenchmark=enabled
+   -Ddrm_backend=enabled
+   -Denable_gamescope=true
+   -Denable_gamescope_wsi_layer=true
    -Dpipewire=enabled
    -Dinput_emulation=enabled
    -Drt_cap=enabled
    -Davif_screenshots=enabled
    -Dsdl2_backend=enabled
-   -Denable_openvr_support=false
+   -Denable_openvr_support=true
    -Dforce_fallback_for=vkroots,wlroots,libliftoff
 )
 

@@ -1,0 +1,30 @@
+From e0cd8712a0b15892fbdef3aa00361f4b9a2a63c3 Mon Sep 17 00:00:00 2001
+From: Simone Caronni <negativo17@gmail.com>
+Date: Mon, 14 Apr 2025 08:25:48 +0200
+Subject: [PATCH] Add misssing libudev dependency
+
+---
+ src/meson.build | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/src/meson.build b/src/meson.build
+index 63897dd2a..36ee4f776 100644
+--- a/src/meson.build
++++ b/src/meson.build
+@@ -124,6 +124,7 @@ src = [
+ 
+ luajit_dep = dependency( 'luajit' )
+ libinput_dep = dependency('libinput', required: true)
++libudev_dep = dependency('libudev', required: true)
+ 
+ gamescope_cpp_args = []
+ if drm_dep.found()
+@@ -196,7 +197,7 @@ gamescope_version = configure_file(
+       xkbcommon, thread_dep, sdl2_dep, wlroots_dep,
+       vulkan_dep, liftoff_dep, dep_xtst, dep_xmu, cap_dep, epoll_dep, pipewire_dep, librt_dep,
+       stb_dep, displayinfo_dep, openvr_dep, dep_xcursor, avif_dep, dep_xi,
+-      libdecor_dep, eis_dep, luajit_dep, libinput_dep,
++      libdecor_dep, eis_dep, luajit_dep, libinput_dep, libudev_dep
+     ],
+     install: true,
+     cpp_args: gamescope_cpp_args,
