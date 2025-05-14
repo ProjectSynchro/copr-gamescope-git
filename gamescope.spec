@@ -1,4 +1,4 @@
-%global commit baae74c4b13676fa76a8b200f21ac78f55079734
+%global commit 6fbed1519460d438b8d02a65d2c5b4558b2bf1d9
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 %global git_date 20250514
 %global tag 3.16.7
