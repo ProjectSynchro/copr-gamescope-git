@@ -1,6 +1,6 @@
 Copr repository for git builds of gamescope, commits are fetched every hour.
 
-The packages in this repo should work on Fedora 39 and Fedora 40+.
+The packages in this repo should work on Fedora 41+.
 
 
 
