@@ -1,7 +1,7 @@
-%global commit ad39bf22658fb26a51e93f8db111b47d993d21eb
+%global commit fcb604724813ab3f3714cf6d4b5b1c4cbcb1b370
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 %global git_date 20250612
-%global tag 3.16.11
+%global tag 3.16.12
 %global libliftoff_minver 0.4.1
 
 Name:           gamescope
