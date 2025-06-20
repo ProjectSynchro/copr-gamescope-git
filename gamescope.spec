@@ -47,9 +47,6 @@ BuildRequires:  pkgconfig(wayland-protocols) >= 1.41
 BuildRequires:  pkgconfig(xkbcommon)
 BuildRequires:  pkgconfig(sdl2)
 BuildRequires:  pkgconfig(luajit)
-%if 0%{?fedora} > 40
-BuildRequires:  pkgconfig(openvr) >= 2.7
-%endif
 BuildRequires:  pkgconfig(libpipewire-0.3)
 BuildRequires:  pkgconfig(libavif) >= 1.0.0
 BuildRequires:  pkgconfig(libcap)
@@ -139,9 +136,7 @@ MESON_OPTIONS=(
    -Drt_cap=enabled
    -Davif_screenshots=enabled
    -Dsdl2_backend=enabled
-%if 0%{?fedora} > 40
-   -Denable_openvr_support=true
-%endif
+   -Denable_openvr_support=false
    -Dforce_fallback_for=vkroots,wlroots,libliftoff
 )
 
@@ -159,7 +154,7 @@ cd gamescope
 %{_bindir}/gamescopectl
 %{_bindir}/gamescopereaper
 %{_bindir}/gamescopestream
-%{_datadir}/gamescope/scripts/
+%{_datadir}/gamescope/
 %files libs
 %{_libdir}/*.so
 %{_datadir}/vulkan/implicit_layer.d/
