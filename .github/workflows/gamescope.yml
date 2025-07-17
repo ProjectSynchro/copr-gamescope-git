@@ -14,13 +14,35 @@ jobs:
 
       - name: Get Latest Commit
         id: get-commit
+        continue-on-error: true
         run: |
-          latest_commit=$(curl -s https://api.github.com/repos/ValveSoftware/gamescope/commits/master | jq -r '.sha')
-          git_date=$(curl -s https://api.github.com/repos/ValveSoftware/gamescope/commits/master | jq -r '.commit.committer.date' | sed 's/[-:]//g' | cut -c1-8)
-          latest_tag=$(curl -s https://api.github.com/repos/ValveSoftware/gamescope/tags | jq -r '[.[] | select(.name | test("^[0-9]+\\.[0-9]+\\.[0-9]+$"))][0].name')
-          echo "latest-commit=$latest_commit" >> $GITHUB_OUTPUT
-          echo "git-date=$git_date" >> $GITHUB_OUTPUT
-          echo "latest-tag=$latest_tag" >> $GITHUB_OUTPUT
+          max_retries=5
+          attempt=0
+          success=false
+
+          while [ $attempt -lt $max_retries ]; do
+            echo "Attempt $((attempt+1)) to fetch commit..."
+            response=$(curl -s --fail https://api.github.com/repos/ValveSoftware/gamescope/commits/master) && success=true && break
+            attempt=$((attempt+1))
+            sleep 5
+          done
+
+          if [ "$success" = true ]; then
+            latest_commit=$(echo "$response" | jq -r '.sha')
+            git_date=$(echo "$response" | jq -r '.commit.committer.date' | sed 's/[-:]//g')
+
+            tag_response=$(curl -s --fail https://api.github.com/repos/ValveSoftware/gamescope/tags || echo '[]')
+            latest_tag=$(echo "$tag_response" | jq -r '.[0].name')
+
+            echo "latest-commit=$latest_commit" >> $GITHUB_OUTPUT
+            echo "git-date=$git_date" >> $GITHUB_OUTPUT
+            echo "latest-tag=$latest_tag" >> $GITHUB_OUTPUT
+          else
+            echo "Failed to fetch commit after $max_retries attempts."
+            echo "latest-commit=" >> $GITHUB_OUTPUT
+            echo "git-date=" >> $GITHUB_OUTPUT
+            echo "latest-tag=" >> $GITHUB_OUTPUT
+          fi
 
       - name: Get Current Commit
         id: get-current-commit
@@ -31,21 +53,29 @@ jobs:
       - name: Compare Commits
         id: compare-commits
         run: |
-          if [ "${{ steps.get-commit.outputs.latest-commit }}" != "${{ steps.get-current-commit.outputs.current-commit }}" ]; then
-            echo "new-commit='true'" >> $GITHUB_OUTPUT
+          latest="${{ steps.get-commit.outputs.latest-commit }}"
+          current="${{ steps.get-current-commit.outputs.current-commit }}"
+
+          if [ -z "$latest" ]; then
+            echo "No latest commit fetched. Skipping update."
+            echo "new-commit=false" >> $GITHUB_OUTPUT
+          elif [ "$latest" != "$current" ]; then
+            echo "New commit found: $latest"
+            echo "new-commit=true" >> $GITHUB_OUTPUT
           else
-            echo "new-commit='false'" >> $GITHUB_OUTPUT
+            echo "No update required."
+            echo "new-commit=false" >> $GITHUB_OUTPUT
           fi
 
       - name: Update Spec File
-        if: ${{ contains(steps.compare-commits.outputs.new-commit, 'true') }}
+        if: ${{ steps.compare-commits.outputs.new-commit == 'true' }}
         run: |
           sed -i "s/%global commit .*/%global commit ${{ steps.get-commit.outputs.latest-commit }}/g" gamescope.spec
           sed -i "s/%global git_date .*/%global git_date ${{ steps.get-commit.outputs.git-date }}/g" gamescope.spec
           sed -i "s/%global tag .*/%global tag ${{ steps.get-commit.outputs.latest-tag }}/g" gamescope.spec
           
       - name: Commit and Push Changes
-        if: ${{ contains(steps.compare-commits.outputs.new-commit, 'true') }}
+        if: ${{ steps.compare-commits.outputs.new-commit == 'true' }}
         run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
