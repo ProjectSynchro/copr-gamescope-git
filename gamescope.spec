@@ -1,4 +1,4 @@
-%global commit 5f004e8e30b7e6fdf3a1378ebb1c2c429003b8da
+%global commit changeme
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 %global git_date 20250722T192813Z
 %global tag dmemcg-experimental

@@ -32,7 +32,8 @@ jobs:
             git_date=$(echo "$response" | jq -r '.commit.committer.date' | sed 's/[-:]//g')
 
             tag_response=$(curl -s --fail https://api.github.com/repos/ValveSoftware/gamescope/tags || echo '[]')
-            latest_tag=$(echo "$tag_response" | jq -r '.[0].name')
+            # Filter tags matching semantic versioning (e.g. v1.2.3 or 1.2.3) and pick the first valid one
+            latest_tag=$(echo "$tag_response" | jq -r '[.[] | select(.name | test("^v?\\d+\\.\\d+\\.\\d+$"))] | .[0].name')
 
             echo "latest-commit=$latest_commit" >> $GITHUB_OUTPUT
             echo "git-date=$git_date" >> $GITHUB_OUTPUT
