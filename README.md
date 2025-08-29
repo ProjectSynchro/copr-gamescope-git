@@ -1,3 +1,6 @@
+> ⚠️ **Notice:**  
+> This project has migrated to **[Codeberg](https://codeberg.org/Synchro/copr-gamescope-git)**. 
+
 Copr repository for git builds of gamescope, commits are fetched every hour.
 
 The packages in this repo should work on Fedora 41+.
